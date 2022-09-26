@@ -19,8 +19,10 @@ import {
   PendingActions,
   Dashboard,
   Home,
+  Logout
 } from "@mui/icons-material";
 import styled from "@emotion/styled";
+import { Link, useLocation } from "react-router-dom";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -31,6 +33,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export function SideNav({ children }) {
   const [open, setOpen] = useState(true);
+  const location = useLocation();
+  const { pathname } = location;
+  const splitLocation = pathname.split("/");
 
   const renderDrawHeader = () => {
     return (
@@ -43,81 +48,114 @@ export function SideNav({ children }) {
     );
   };
 
+  const getActiveMenuClass = (path) => {
+    return splitLocation[1] === path ? "mb-2 bg-danger text-white" : "mb-2";
+  };
+
+  const getActiveMenuIconClass = (path) => {
+    return splitLocation[1] === path ? "text-white" : "";
+  };
+
   const renderHomeMenu = () => {
     return (
-      <MenuItem className="mb-2">
-        <ListItemIcon>
-          <Home fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Home</ListItemText>
-      </MenuItem>
+      <Link to="/" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("")}>
+          <ListItemIcon className={getActiveMenuIconClass("")}>
+            <Home fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Home</ListItemText>
+        </MenuItem>
+      </Link>
     );
   };
 
   const renderProjectsMenu = () => {
     return (
-      <MenuItem className="mb-2">
-        <ListItemIcon>
-          <PendingActions fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Projects</ListItemText>
-      </MenuItem>
+      <Link to="/projects" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("projects")}>
+          <ListItemIcon className={getActiveMenuIconClass("projects")}>
+            <PendingActions fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Projects</ListItemText>
+        </MenuItem>
+      </Link>
     );
   };
 
   const renderDashboardMenu = () => {
     return (
-      <MenuItem className="mb-2">
-        <ListItemIcon>
-          <Dashboard fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Dashboard</ListItemText>
-      </MenuItem>
+      <Link to="/dashboard" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("dashboard")}>
+          <ListItemIcon className={getActiveMenuIconClass("dashboard")}>
+            <Dashboard fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Dashboard</ListItemText>
+        </MenuItem>
+      </Link>
     );
   };
 
   const renderMessagesMenu = () => {
     return (
-      <MenuItem className="mb-2">
-        <StyledBadge color="error" badgeContent={6}>
-          <ListItemIcon>
-            <Forum fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Messages</ListItemText>
-        </StyledBadge>
-      </MenuItem>
+      <Link to="/messages" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("messages")}>
+          <StyledBadge color="error" badgeContent={6}>
+            <ListItemIcon className={getActiveMenuIconClass("messages")}>
+              <Forum fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Messages</ListItemText>
+          </StyledBadge>
+        </MenuItem>
+      </Link>
     );
   };
 
   const renderDocumentsMenu = () => {
     return (
-      <MenuItem className="mb-2">
-        <ListItemIcon>
-          <TextSnippet fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Documents</ListItemText>
-      </MenuItem>
+      <Link to="/documents" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("documents")}>
+          <ListItemIcon className={getActiveMenuIconClass("documents")}>
+            <TextSnippet fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Documents</ListItemText>
+        </MenuItem>
+      </Link>
     );
   };
 
   const renderOrganizationsMenu = () => {
     return (
-      <MenuItem className="mb-2">
-        <ListItemIcon>
-          <Apartment fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Organizations</ListItemText>
-      </MenuItem>
+      <Link to="/organizations" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("organizations")}>
+          <ListItemIcon className={getActiveMenuIconClass("organizations")}>
+            <Apartment fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Organizations</ListItemText>
+        </MenuItem>
+      </Link>
     );
   };
 
   const renderSettingsMenu = () => {
     return (
-      <MenuItem className="mb-2">
+      <Link to="/settings" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("settings")}>
+          <ListItemIcon className={getActiveMenuIconClass("settings")}>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Settings</ListItemText>
+        </MenuItem>
+      </Link>
+    );
+  };
+
+  const renderLogoutMenu = () => {
+    return (
+      <MenuItem disabled className="mt-auto">
         <ListItemIcon>
-          <Settings fontSize="small" />
+          <Logout fontSize="small" />
         </ListItemIcon>
-        <ListItemText>Settings</ListItemText>
+        <ListItemText>Logout</ListItemText>
       </MenuItem>
     );
   };
@@ -146,7 +184,7 @@ export function SideNav({ children }) {
               height: "calc(100% - 90px)",
             }}
           >
-            <MenuList>
+            <MenuList className="h-100 d-flex flex-column">
               {renderHomeMenu()}
               {renderProjectsMenu()}
               {renderDashboardMenu()}
@@ -154,6 +192,7 @@ export function SideNav({ children }) {
               {renderDocumentsMenu()}
               {renderOrganizationsMenu()}
               {renderSettingsMenu()}
+              {renderLogoutMenu()}
             </MenuList>
           </Paper>
         </Drawer>
