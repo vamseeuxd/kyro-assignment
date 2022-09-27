@@ -20,10 +20,12 @@ import {
   Dashboard,
   Home,
   Logout,
-  Person
+  Person,
 } from "@mui/icons-material";
 import styled from "@emotion/styled";
 import { Link, useLocation } from "react-router-dom";
+import Localization from "../../localization/LocalizedMessage";
+import ChangeLanguage from "../../localization/changeLanguage";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -40,12 +42,15 @@ export function SideNav({ children }) {
 
   const renderDrawHeader = () => {
     return (
-      <div className="w-100 d-flex flex-row justify-content-between align-items-center px-4 pt-3">
-        <img alt="Logo" src="./logo.png" className="logo" />
-        <IconButton className="text-dark" onClick={() => setOpen(!open)}>
-          <MenuIcon />
-        </IconButton>
-      </div>
+      <>
+        <div className="w-100 d-flex flex-row justify-content-between align-items-center px-4 pt-3">
+          <img alt="Logo" src="./logo.png" className="logo" />
+          <IconButton className="text-dark" onClick={() => setOpen(!open)}>
+            <MenuIcon />
+          </IconButton>
+        </div>
+        <ChangeLanguage />
+      </>
     );
   };
 
@@ -64,7 +69,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("")}>
             <Home fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Home</ListItemText>
+          <ListItemText>{<Localization of="home" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -77,7 +82,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("projects")}>
             <PendingActions fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Projects</ListItemText>
+          <ListItemText>{<Localization of="Projects" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -90,7 +95,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("dashboard")}>
             <Dashboard fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Dashboard</ListItemText>
+          <ListItemText>{<Localization of="Dashboard" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -104,7 +109,7 @@ export function SideNav({ children }) {
             <ListItemIcon className={getActiveMenuIconClass("messages")}>
               <Forum fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Messages</ListItemText>
+            <ListItemText>{<Localization of="Messages" />}</ListItemText>
           </StyledBadge>
         </MenuItem>
       </Link>
@@ -118,7 +123,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("documents")}>
             <TextSnippet fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Documents</ListItemText>
+          <ListItemText>{<Localization of="Documents" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -131,7 +136,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("organizations")}>
             <Apartment fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Organizations</ListItemText>
+          <ListItemText>{<Localization of="Organizations" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -144,7 +149,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("settings")}>
             <Settings fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Settings</ListItemText>
+          <ListItemText>{<Localization of="Settings" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -157,7 +162,7 @@ export function SideNav({ children }) {
           <ListItemIcon className={getActiveMenuIconClass("myProfile")}>
             <Person fontSize="small" />
           </ListItemIcon>
-          <ListItemText>MyProfile</ListItemText>
+          <ListItemText>{<Localization of="MyProfile" />}</ListItemText>
         </MenuItem>
       </Link>
     );
@@ -169,7 +174,7 @@ export function SideNav({ children }) {
         <ListItemIcon>
           <Logout fontSize="small" />
         </ListItemIcon>
-        <ListItemText>Logout</ListItemText>
+        <ListItemText>{<Localization of="Logout" />}</ListItemText>
       </MenuItem>
     );
   };
