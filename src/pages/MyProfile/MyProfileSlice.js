@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchProfile } from "./MyProfileAPI";
+import { fetchProfile, updateProfile } from "./MyProfileAPI";
 
 const initialState = {
   value: {
@@ -16,9 +16,16 @@ const initialState = {
 
 export const getProfile = createAsyncThunk("myProfile/get", async (id) => {
   const response = await fetchProfile(id);
-  // The value we return becomes the `fulfilled` action payload
   return response;
 });
+
+export const saveProfile = createAsyncThunk(
+  "myProfile/save",
+  async (id, body) => {
+    const response = await updateProfile(id, body);
+    return response;
+  }
+);
 
 export const myProfileSlice = createSlice({
   name: "myProfile",
@@ -32,9 +39,19 @@ export const myProfileSlice = createSlice({
         state.status = "idle";
         state.value = action.payload;
       });
+
+    builder
+      .addCase(saveProfile.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(saveProfile.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.value = action.payload;
+      });
   },
 });
 
 export const selectMyProfile = (state) => state.myProfile.value;
+export const selectMyProfileStatus = (state) => state.myProfile.status;
 
 export default myProfileSlice.reducer;

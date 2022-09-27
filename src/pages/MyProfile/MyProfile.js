@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import * as moment from "moment";
-import { Button, IconButton, Paper, TextField } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  Paper,
+  TextField,
+} from "@mui/material";
 import {
   Person,
   AssignmentInd,
@@ -13,11 +19,17 @@ import {
 } from "@mui/icons-material";
 import "./MyProfile.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile, selectMyProfile } from "./MyProfileSlice";
+import {
+  getProfile,
+  saveProfile,
+  selectMyProfile,
+  selectMyProfileStatus,
+} from "./MyProfileSlice";
 
 function MyProfile() {
   const dispatch = useDispatch();
-  const myProfile = useSelector(selectMyProfile);
+  const profile = useSelector(selectMyProfile);
+  const status = useSelector(selectMyProfileStatus);
 
   const formOptions = [
     { id: "firstName", label: "First Name", type: "text", icon: <Person /> },
@@ -44,18 +56,20 @@ function MyProfile() {
     { id: "location", label: "Location", type: "text", icon: <LocationOn /> },
   ];
 
-  const [formData, setFormData] = useState(myProfile);
+  const [formData, setFormData] = useState(profile);
 
   useEffect(() => {
+    console.log("--------------");
     dispatch(getProfile("1"));
-  }, []);
-
-  useEffect(() => {
-    setFormData(myProfile);
-  }, [myProfile]);
+  }, [dispatch]);
 
   const updateFormData = (event) => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
+  };
+
+  const saveChanges = () => {
+    console.log(formData, profile);
+    dispatch(saveProfile(profile.id, formData));
   };
 
   const getTimeOfTheTime = () => {
@@ -91,7 +105,7 @@ function MyProfile() {
                       id={id}
                       label={label}
                       onChange={updateFormData}
-                      defaultValue={formData[id]}
+                      defaultValue={profile[id]}
                       type={type}
                       sx={{ m: 1, width: "100%" }}
                       InputProps={{
@@ -103,7 +117,7 @@ function MyProfile() {
               })}
             </div>
             <div className="mt-auto text-center">
-              <Button color="error" variant="contained">
+              <Button color="error" variant="contained" onClick={saveChanges}>
                 SAVE CHANGES
               </Button>
             </div>
@@ -162,7 +176,7 @@ function MyProfile() {
             />
             <div className="d-flex flex-column me-2">
               <span style={{ fontSize: "12px" }} className="m-0 p-0 fw-bold">
-              {formData.displayName}
+                {formData.displayName}
               </span>
               <span style={{ fontSize: "12px" }} className="m-0 p-0 text-muted">
                 Project Manager
@@ -179,7 +193,9 @@ function MyProfile() {
     return (
       <div className="d-flex flex-row justify-content-between align-items-center w-100">
         <div className="d-flex flex-column">
-          <h6 className="m-0 p-0">{getTimeOfTheTime()}, Adam</h6>
+          <h6 className="m-0 p-0">
+            {getTimeOfTheTime()}, {formData.displayName}
+          </h6>
           <p className="text-muted m-0 p-0">
             {moment().format("MMMM DD, YYYY")}
           </p>
@@ -189,7 +205,19 @@ function MyProfile() {
     );
   };
 
-  return <div className="d-flex flex-row">{renderMainContent()}</div>;
+  return (
+    <div className="d-flex flex-row">
+      {renderMainContent()}
+      {status !== "idle" && (
+        <div
+          className="vw-100 vh-100 position-fixed top-0 start-0 d-flex justify-content-center align-items-center"
+          style={{ zIndex: 1024, backgroundColor: "rgba(255,255,255,0.8)" }}
+        >
+          <CircularProgress />
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default MyProfile;
