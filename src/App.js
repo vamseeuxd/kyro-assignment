@@ -1,13 +1,8 @@
 import React from "react";
 import "./App.css";
 import { SideNav } from "./layout/side-nav/SideNav";
-// import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
-/* const router = createBrowserRouter([
-  { path: "/", element: <div>Hello world!</div> },
-  { path: "/", element: <div>Home</div> },
-]); */
+import MyProfile from "./pages/MyProfile/MyProfile";
 
 function App() {
   return (
@@ -34,6 +29,9 @@ function App() {
           </Route>
           <Route path="/settings">
             <h1>Settings</h1>
+          </Route>
+          <Route path="/myProfile">
+            <MyProfile/>
           </Route>
         </Switch>
       </SideNav>

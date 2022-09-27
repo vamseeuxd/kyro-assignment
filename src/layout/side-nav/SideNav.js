@@ -19,7 +19,8 @@ import {
   PendingActions,
   Dashboard,
   Home,
-  Logout
+  Logout,
+  Person
 } from "@mui/icons-material";
 import styled from "@emotion/styled";
 import { Link, useLocation } from "react-router-dom";
@@ -149,6 +150,19 @@ export function SideNav({ children }) {
     );
   };
 
+  const renderMyProfileMenu = () => {
+    return (
+      <Link to="/myProfile" className="text-decoration-none text-reset">
+        <MenuItem className={getActiveMenuClass("myProfile")}>
+          <ListItemIcon className={getActiveMenuIconClass("myProfile")}>
+            <Person fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>MyProfile</ListItemText>
+        </MenuItem>
+      </Link>
+    );
+  };
+
   const renderLogoutMenu = () => {
     return (
       <MenuItem disabled className="mt-auto">
@@ -178,9 +192,9 @@ export function SideNav({ children }) {
           {renderDrawHeader()}
           <Paper
             sx={{
-              width: 250,
+              width: 220,
               marginTop: "30px",
-              maxWidth: "100%",
+              maxWidth: "220px",
               height: "calc(100% - 90px)",
             }}
           >
@@ -192,6 +206,7 @@ export function SideNav({ children }) {
               {renderDocumentsMenu()}
               {renderOrganizationsMenu()}
               {renderSettingsMenu()}
+              {renderMyProfileMenu()}
               {renderLogoutMenu()}
             </MenuList>
           </Paper>
@@ -201,11 +216,11 @@ export function SideNav({ children }) {
   };
 
   return (
-    <div className="bg-light vw-100 vh-100 d-flex">
+    <div className="bg-light vw-100 vh-100 d-flex px-2">
       {renderSieNav()}
       <div
         className="w-100 main-content"
-        style={{ marginLeft: open ? "270px" : "40px" }}
+        style={{ marginLeft: open ? "220px" : "40px" }}
       >
         {children}
       </div>
